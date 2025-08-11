@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Anniversary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<style>
+/* ====== GLOBAL STYLE ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ====== BACKGROUND CANVAS ====== */
+canvas#stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* ====== HEADER ====== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(255, 192, 203, 0.2);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.4em;
+  color: #ffb6c1;
+  text-decoration: none;
+}
+
+/* ====== MENU TOGGLE ====== */
+.menu-toggle {
+  display: none;
+  font-size: 1.8em;
+  cursor: pointer;
+  color: #ffb6c1;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+nav a {
+  padding: 8px 15px;
+  border-radius: 20px;
+  background: transparent;
+  color: #ffb6c1;
+  border: 2px solid #ffb6c1;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+  background: #ffb6c1;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #ffb6c1;
+}
+
+/* ====== SECTION BASE ====== */
+section {
+  padding: 60px 20px 40px;
+  text-align: center;
+  min-height: 80vh;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.6s ease-out;
+}
+
+section.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ====== HOME PROFILE ====== */
+.home .profile-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 5px solid #ffb6c1;
+  box-shadow: 0 0 20px #ffb6c1;
+  overflow: hidden;
+  margin: 90px auto 25px;
+}
+
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h1 span {
+  color: #ffe4e1;
+}
+
+/* ====== TYPING TEXT ====== */
+.typing-text,
+.typing-desc {
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  min-height: 30px;
+}
+
+/* ====== DESCRIPTION ====== */
+.description {
+  max-width: 600px;
+  margin: auto;
+  font-size: 1.1em;
+  color: #fff0f5;
+  min-height: 50px;
+}
+
+/* ====== SOCIAL BUTTONS ====== */
+.social-buttons {
+  margin-top: 20px;
+}
+
+.social-buttons a {
+  display: inline-block;
+  margin: 10px 10px 0;
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: #ffb6c1;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.social-buttons a:hover {
+  background-color: #ff69b4;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff69b4;
+}
+
+/* ====== SECTION TITLES ====== */
+.section-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #ffe4e1;
+}
+
+/* ====== SKILLS & PROJECTS ====== */
+.skills-container,
+.projects-container {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.skill-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid #ffb6c1;
+  box-shadow: 0 0 10px #ffb6c122;
+  transition: 0.3s;
+}
+
+.skill-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #ffb6c1;
+}
+
+.project-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #ffb6c1;
+  padding: 20px;
+  border-radius: 15px;
+  width: 250px;
+  box-shadow: 0 0 10px #ffb6c122;
+  transition: 0.3s;
+}
+
+.project-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #ffb6c1;
+}
+
+/* ====== FOOTER ====== */
+footer {
+  text-align: center;
+  padding: 20px 10px 40px;
+  background: rgba(255, 192, 203, 0.3);
+  font-size: 0.9em;
+  color: #fff0f5;
+  margin-top: -40px;
+}
+
+/* ====== MUSIC PLAYER ====== */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff69b4;
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #ff69b4;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.5s ease;
+}
+
+.music-player.playing {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ====== RESPONSIVE ====== */
+@media(max-width: 768px) {
+  nav {
+    flex-direction: column;
+    background: rgba(255, 182, 193, 0.95);
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+  }
+
+  nav.show {
+    display: flex;
+    animation: slideDown 0.3s ease;
+  }
+
+  .menu-toggle {
+    display: block;
+    z-index: 1001;
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<header>
+  <a class="logo">Happy Anniversary</a>
+  <i class="fas fa-bars menu-toggle" onclick="toggleMenu()"></i>
+  <nav id="navMenu">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">My Love</a>
+    <a href="#skills">For Yourself</a>
+    <a href="#projects">Project</a>
+    <a href="#contact">My Contact</a>
+  </nav>
+</header>
+
+<section id="home" class="home">
+  <div class="profile-img">
+    <img src="https://j.top4top.io/p_35102rpnu0.png" alt="Profile" />
+  </div>
+  <h1>Hi, I'm <span>VexxuzzZ</span></h1>
+  <div class="typing-text" id="typing-role"></div>
+  <div class="typing-desc" id="typing-desc"></div>
+  <div class="social-buttons">
+    <a href="https://wa.me/62857734669112">WhatsApp</a>
+    <a href="https://t.me/BangZyur">Telegram</a>
+    <a href="https://youtube.com/@NotAvaible">YouTube</a>
+  </div>
+</section>
+
+<section id="skills">
+  <h2 class="section-title">For Yourself</h2>
+  <div class="skills-container">
+    <img class="skill-icon" src="https://j.top4top.io/p_35102rpnu0.png" alt="HTML">
+    <img class="skill-icon" src="https://j.top4top.io/p_35102rpnu0.png" alt="CSS">
+    <img class="skill-icon" src="https://j.top4top.io/p_35102rpnu0.png" alt="JS">
+    <img class="skill-icon" src="https://j.top4top.io/p_35102rpnu0.png" alt="Python">
+    <img class="skill-icon" src="https://j.top4top.io/p_35102rpnu0.png" alt="Bash">
+  </div>
+</section>
+
+<section id="about">
+  <h2 class="section-title">My Love</h2>
+  <p class="description">
+    Hello My Love, I deliberately created this anniversary website for you so that you know that I only love you, not anyone else.
+  </p>
+</section>
+
+
+<section id="projects">
+  <h2 class="section-title">Projects</h2>
+  <div class="projects-container">
+    <div class="project-box">
+      <h3>Get Your Love Completely</h3>
+      <p>Taking care of you forever and being happy together.</p>
+    </div>
+    <div class="project-box">
+      <h3>Happy anniversary Website</h3>
+      <p>I Can Also Make A Simple Happy anniversary Like This Website.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">Contact</h2>
+  <p class="description">Gmail Me: <b>rizkybayuaji267@gmail.com</b></p>
+</section>
+
+<footer>
+  © VexxuzzZ
+</footer>
+
+<div class="music-player" onclick="toggleMusic()">
+  <i class="fas fa-music"></i>
+  <audio id="bgMusic" src="https://files.catbox.moe/a5ncoy.mp3" loop autoplay></audio>
+</div>
+
+<script>
+const roles = ["Web Developer", "Script Creator", "Bot WhatsApp"];
+const desc = "Welcome to my portfolio. My name is VexxuzzZXVO. I'm a Developer, Bot WhatsApp and Telegram b For You From Me 1000 Years Ago Do You Still Remember Me I Purposely Created This Website For Your Anniversary In The Next 1000 Years.";
+let roleIndex = 0, roleChar = 0, descChar = 0;
+
+function typeRole() {
+  const el = document.getElementById('typing-role');
+  if (roleChar < roles[roleIndex].length) {
+    el.textContent += roles[roleIndex][roleChar++];
+    setTimeout(typeRole, 100);
+  } else {
+    setTimeout(() => {
+      el.textContent = "";
+      roleChar = 0;
+      roleIndex = (roleIndex + 1) % roles.length;
+      typeRole();
+    }, 1500);
+  }
+}
+
+function typeDesc() {
+  const el = document.getElementById('typing-desc');
+  if (descChar < desc.length) {
+    el.textContent += desc[descChar++];
+    setTimeout(typeDesc, 40);
+  }
+}
+
+function revealOnScroll() {
+  document.querySelectorAll("section").forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if (top < window.innerHeight * 0.85) sec.classList.add("show");
+  });
+}
+
+function toggleMenu() {
+  document.getElementById('navMenu').classList.toggle('show');
+}
+
+document.querySelectorAll('#navMenu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navMenu').classList.remove('show');
+  });
+});
+
+// ===== HEARTS & STARS ANIMATION =====
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Heart {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 20 + 10;
+    this.speed = Math.random() * 2 + 0.5;
+    this.opacity = Math.random() * 0.5 + 0.5;
+  }
+  draw() {
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = "#ff69b4";
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2,
+                      this.x - this.size, this.y + this.size / 3,
+                      this.x, this.y + this.size);
+    ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3,
+                      this.x + this.size / 2, this.y - this.size / 2,
+                      this.x, this.y);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  update() {
+    this.y += this.speed;
+    if (this.y > canvas.height) {
+      this.y = 0 - this.size;
+      this.x = Math.random() * canvas.width;
+    }
+    this.draw();
+  }
+}
+
+let heartsArray = [];
+for (let i = 0; i < 30; i++) {
+  heartsArray.push(new Heart());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  heartsArray.forEach(heart => heart.update());
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const music = document.getElementById("bgMusic");
+const musicBtn = document.querySelector(".music-player");
+
+function toggleMusic() {
+  if (music.paused) {
+    music.play();
+    musicBtn.classList.add("playing");
+  } else {
+    music.pause();
+    musicBtn.classList.remove("playing");
+  }
+}
+
+// Init typing & scroll reveal
+typeRole();
+typeDesc();
+window.addEventListener("scroll", revealOnScroll);
+</script>
+
+</body>
+</html>
